@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package photran.me.timepicker;
+package photran.me.timepicker.views;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -37,6 +37,9 @@ import android.view.accessibility.AccessibilityManager;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.FrameLayout;
 
+import photran.me.timepicker.HapticFeedbackController;
+import photran.me.timepicker.R;
+import photran.me.timepicker.TimePickerDialog;
 import photran.me.timepicker.views.AmPmCirclesView;
 import photran.me.timepicker.views.CircleView;
 import photran.me.timepicker.views.RadialSelectorView;

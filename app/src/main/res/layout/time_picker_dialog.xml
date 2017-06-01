@@ -33,7 +33,7 @@
             android:layout_gravity="center" />
     </FrameLayout>
 
-    <photran.me.timepicker.RadialPickerLayout
+    <photran.me.timepicker.views.RadialPickerLayout
         android:id="@+id/time_picker"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/picker_dimen"

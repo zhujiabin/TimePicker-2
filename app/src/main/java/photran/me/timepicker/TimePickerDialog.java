@@ -19,7 +19,6 @@ package photran.me.timepicker;
 import android.animation.ObjectAnimator;
 import android.app.ActionBar.LayoutParams;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -39,10 +38,41 @@ import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import photran.me.timepicker.views.RadialPickerLayout;
+
 /**
  * Dialog to set a time.
  */
 public class TimePickerDialog extends DialogFragment implements RadialPickerLayout.OnValueSelectedListener {
+    public static class Builder {
+        public static final String ARG_LISTENER = OnTimeSetListener.class.getName();
+
+        private Bundle mBundle = new Bundle();
+
+        public Builder() {
+
+        }
+
+        public Builder setTimer(int hourOfDay, int minute, boolean is24HourMode) {
+            mBundle.putInt(KEY_HOUR_OF_DAY, hourOfDay);
+            mBundle.putInt(KEY_MINUTE, minute);
+            mBundle.putBoolean(KEY_IS_24_HOUR_VIEW, is24HourMode);
+
+            return this;
+        }
+
+        public Builder setOnTimeSetListener(OnTimeSetListener listener) {
+            mBundle.putParcelable(ARG_LISTENER, listener);
+            return this;
+        }
+
+        public TimePickerDialog build() {
+            final TimePickerDialog timePickerDialog = new TimePickerDialog();
+            timePickerDialog.setArguments(mBundle);
+            return timePickerDialog;
+        }
+    }
+
     private static final String TAG = "TimePickerDialog";
 
     private static final String KEY_HOUR_OF_DAY = "hour_of_day";
@@ -75,7 +105,7 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
     private TextView mMinuteView;
     private TextView mMinuteSpaceView;
     private TextView mAmPmTextView;
-    private View mAmPmHitspace;
+    private View mAmPmHitSpace;
     private RadialPickerLayout mTimePicker;
 
     private int mSelectedColor;
@@ -105,40 +135,10 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
     private String mMinutePickerDescription;
     private String mSelectMinutes;
 
-    /**
-     * The callback interface used to indicate the user is done filling in
-     * the time (they clicked on the 'Set' button).
-     */
-    public interface OnTimeSetListener {
 
-        /**
-         * @param view      The view associated with this listener.
-         * @param hourOfDay The hour that was set.
-         * @param minute    The minute that was set.
-         */
-        void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute);
-    }
-
-    public TimePickerDialog() {
-        // Empty constructor required for dialog fragment.
-    }
-
-    public TimePickerDialog(Context context, int theme, OnTimeSetListener callback,
+    private void initialize(OnTimeSetListener callback,
                             int hourOfDay, int minute, boolean is24HourMode) {
-        // Empty constructor required for dialog fragment.
-    }
-
-    public static TimePickerDialog newInstance(OnTimeSetListener callback,
-                                               int ofDay, int hourOfDay, int minute, boolean is24HourMode) {
-        TimePickerDialog ret = new TimePickerDialog();
-        ret.initialize(callback, hourOfDay, minute, is24HourMode);
-        return ret;
-    }
-
-    public void initialize(OnTimeSetListener callback,
-                           int hourOfDay, int minute, boolean is24HourMode) {
         mCallback = callback;
-
         mInitialHourOfDay = hourOfDay;
         mInitialMinute = minute;
         mIs24HourMode = is24HourMode;
@@ -167,12 +167,25 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
         mInKbMode = false;
     }
 
+    private boolean isContainsArguments(Bundle savedInstanceState) {
+        return savedInstanceState != null && savedInstanceState.containsKey(KEY_HOUR_OF_DAY)
+                && savedInstanceState.containsKey(KEY_MINUTE)
+                && savedInstanceState.containsKey(KEY_IS_24_HOUR_VIEW);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_HOUR_OF_DAY)
-                && savedInstanceState.containsKey(KEY_MINUTE)
-                && savedInstanceState.containsKey(KEY_IS_24_HOUR_VIEW)) {
+
+        Bundle bundle = getArguments();
+        if (isContainsArguments(bundle)) {
+            initialize((OnTimeSetListener) bundle.getParcelable(Builder.ARG_LISTENER),
+                    bundle.getInt(KEY_HOUR_OF_DAY),
+                    bundle.getInt(KEY_MINUTE),
+                    bundle.getBoolean(KEY_IS_24_HOUR_VIEW));
+        }
+
+        if (isContainsArguments(savedInstanceState)) {
             mInitialHourOfDay = savedInstanceState.getInt(KEY_HOUR_OF_DAY);
             mInitialMinute = savedInstanceState.getInt(KEY_MINUTE);
             mIs24HourMode = savedInstanceState.getBoolean(KEY_IS_24_HOUR_VIEW);
@@ -184,7 +197,9 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        if (getDialog().getWindow() != null) {
+            getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        }
 
         View view = inflater.inflate(R.layout.time_picker_dialog, null);
         KeyboardListener keyboardListener = new KeyboardListener();
@@ -196,8 +211,7 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
         mMinutePickerDescription = res.getString(R.string.minute_picker_description);
         mSelectMinutes = res.getString(R.string.select_minutes);
         mSelectedColor = res.getColor(mThemeDark ? R.color.red : R.color.blue);
-        mUnselectedColor =
-                res.getColor(mThemeDark ? android.R.color.white : R.color.numbers_text_color);
+        mUnselectedColor = res.getColor(mThemeDark ? android.R.color.white : R.color.numbers_text_color);
 
         mHourView = (TextView) view.findViewById(R.id.hours);
         mHourView.setOnKeyListener(keyboardListener);
@@ -261,7 +275,7 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
         mDoneButton.setOnKeyListener(keyboardListener);
 
         // Enable or disable the AM/PM view.
-        mAmPmHitspace = view.findViewById(R.id.ampm_hitspace);
+        mAmPmHitSpace = view.findViewById(R.id.ampm_hitspace);
         if (mIs24HourMode) {
             mAmPmTextView.setVisibility(View.GONE);
 
@@ -273,7 +287,7 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
         } else {
             mAmPmTextView.setVisibility(View.VISIBLE);
             updateAmPmDisplay(mInitialHourOfDay < 12 ? AM : PM);
-            mAmPmHitspace.setOnClickListener(new OnClickListener() {
+            mAmPmHitSpace.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     tryVibrate();
@@ -355,11 +369,11 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
         if (amOrPm == AM) {
             mAmPmTextView.setText(mAmText);
             Utils.tryAccessibilityAnnounce(mTimePicker, mAmText);
-            mAmPmHitspace.setContentDescription(mAmText);
+            mAmPmHitSpace.setContentDescription(mAmText);
         } else if (amOrPm == PM) {
             mAmPmTextView.setText(mPmText);
             Utils.tryAccessibilityAnnounce(mTimePicker, mPmText);
-            mAmPmHitspace.setContentDescription(mPmText);
+            mAmPmHitSpace.setContentDescription(mPmText);
         } else {
             mAmPmTextView.setText(mDoublePlaceholderText);
         }
