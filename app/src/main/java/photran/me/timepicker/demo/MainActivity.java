@@ -1,10 +1,13 @@
-package photran.me.timepicker;
+package photran.me.timepicker.demo;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import photran.me.timepicker.R;
+import photran.me.timepicker.TimePickerDialog;
+import photran.me.timepicker.listener.OnTimeSetListener;
 import photran.me.timepicker.views.RadialPickerLayout;
 
 public class MainActivity extends AppCompatActivity {
@@ -18,12 +21,15 @@ public class MainActivity extends AppCompatActivity {
 
         timePickerDialog = new TimePickerDialog.Builder()
                 .setTimer(8, 50, false)
+                .setThemeDark(true)
                 .setOnTimeSetListener(new OnTimeSetListener() {
                     @Override
-                    void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
+                    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
                         Toast.makeText(MainActivity.this, hourOfDay + "-" + minute, Toast.LENGTH_LONG).show();
                     }
-                }).build();
+                }).createDialog();
+
+        timePickerDialog.show(getFragmentManager(), TimePickerDialog.class.getName());
 
     }
 

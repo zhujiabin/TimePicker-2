@@ -30,7 +30,8 @@ import java.text.DateFormatSymbols;
 
 import photran.me.timepicker.R;
 import photran.me.timepicker.TimePickerDialog;
-import photran.me.timepicker.Utils;
+import photran.me.timepicker.other.ResourceLoader;
+import photran.me.timepicker.other.Utils;
 
 /**
  * Draw the two smaller AM and PM circles next to where the larger circle will be.
@@ -75,7 +76,8 @@ public class AmPmCirclesView extends View {
             return;
         }
 
-        Resources res = context.getResources();
+
+        final ResourceLoader res = new ResourceLoader(context);
         mUnselectedColor = res.getColor(android.R.color.white);
         mSelectedColor = res.getColor(R.color.blue);
         mAmPmTextColor = res.getColor(R.color.ampm_text_color);
@@ -101,7 +103,7 @@ public class AmPmCirclesView extends View {
     }
 
     public void setTheme(Context context, boolean themeDark) {
-        Resources res = context.getResources();
+        final ResourceLoader res = new ResourceLoader(context);
         if (themeDark) {
             mUnselectedColor = res.getColor(R.color.dark_gray);
             mSelectedColor = res.getColor(R.color.red);

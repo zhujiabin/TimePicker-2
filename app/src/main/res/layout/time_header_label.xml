@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/separator"
+        android:layout_toStartOf="@+id/separator"
         android:importantForAccessibility="no"
         android:text="@string/time_placeholder"
         android:visibility="invisible" />
@@ -43,8 +43,8 @@
     <FrameLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_alignLeft="@+id/hour_space"
-        android:layout_alignRight="@+id/hour_space"
+        android:layout_alignStart="@+id/hour_space"
+        android:layout_alignEnd="@+id/hour_space"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/extra_time_label_margin"
         android:layout_marginRight="@dimen/extra_time_label_margin">
@@ -65,7 +65,7 @@
         style="@style/time_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/center_view"
+        android:layout_alignEnd="@+id/center_view"
         android:layout_centerVertical="true"
         android:importantForAccessibility="no"
         android:paddingLeft="@dimen/separator_padding"
@@ -78,7 +78,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/separator"
+        android:layout_toEndOf="@+id/separator"
         android:importantForAccessibility="no"
         android:text="@string/time_placeholder"
         android:visibility="invisible" />
@@ -86,8 +86,8 @@
     <FrameLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_alignLeft="@+id/minutes_space"
-        android:layout_alignRight="@+id/minutes_space"
+        android:layout_alignStart="@+id/minutes_space"
+        android:layout_alignEnd="@+id/minutes_space"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/extra_time_label_margin"
         android:layout_marginRight="@dimen/extra_time_label_margin">
@@ -106,10 +106,10 @@
         android:id="@+id/ampm_hitspace"
         android:layout_width="@dimen/ampm_label_size"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/ampm_label"
+        android:layout_alignStart="@+id/ampm_label"
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/ampm_label" />
+        android:layout_alignEnd="@+id/ampm_label" />
 
     <TextView
         android:id="@+id/ampm_label"
@@ -117,7 +117,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/separator"
-        android:layout_toRightOf="@+id/minutes_space"
+        android:layout_toEndOf="@+id/minutes_space"
         android:importantForAccessibility="no"
         android:paddingLeft="@dimen/ampm_left_padding"
         android:paddingRight="@dimen/ampm_left_padding"

@@ -21,6 +21,7 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -31,6 +32,7 @@ import android.util.Log;
 import android.view.View;
 
 import photran.me.timepicker.R;
+import photran.me.timepicker.other.ResourceLoader;
 
 
 /**
@@ -80,7 +82,7 @@ public class RadialTextsView extends View {
         mIsInitialized = false;
     }
 
-    public void initialize(Resources res, String[] texts, String[] innerTexts,
+    public void initialize(ResourceLoader res, String[] texts, String[] innerTexts,
                            boolean is24HourMode, boolean disappearsOut) {
         if (mIsInitialized) {
             Log.e(TAG, "This RadialTextsView may only be initialized once.");
@@ -161,14 +163,6 @@ public class RadialTextsView extends View {
     @Override
     public boolean hasOverlappingRendering() {
         return false;
-    }
-
-    /**
-     * Used by the animation to move the numbers in and out.
-     */
-    public void setAnimationRadiusMultiplier(float animationRadiusMultiplier) {
-        mAnimationRadiusMultiplier = animationRadiusMultiplier;
-        mTextGridValuesDirty = true;
     }
 
     @Override
@@ -296,12 +290,12 @@ public class RadialTextsView extends View {
         kf0 = Keyframe.ofFloat(0f, 1);
         kf1 = Keyframe.ofFloat(midwayPoint, mTransitionMidRadiusMultiplier);
         kf2 = Keyframe.ofFloat(1f, mTransitionEndRadiusMultiplier);
-        PropertyValuesHolder radiusDisappear = PropertyValuesHolder.ofKeyframe(
+        @SuppressLint("ObjectAnimatorBinding") PropertyValuesHolder radiusDisappear = PropertyValuesHolder.ofKeyframe(
                 "animationRadiusMultiplier", kf0, kf1, kf2);
 
         kf0 = Keyframe.ofFloat(0f, 1f);
         kf1 = Keyframe.ofFloat(1f, 0f);
-        PropertyValuesHolder fadeOut = PropertyValuesHolder.ofKeyframe("alpha", kf0, kf1);
+        @SuppressLint("ObjectAnimatorBinding") PropertyValuesHolder fadeOut = PropertyValuesHolder.ofKeyframe("alpha", kf0, kf1);
 
         mDisappearAnimator = ObjectAnimator.ofPropertyValuesHolder(
                 this, radiusDisappear, fadeOut).setDuration(duration);
@@ -320,13 +314,13 @@ public class RadialTextsView extends View {
         kf1 = Keyframe.ofFloat(delayPoint, mTransitionEndRadiusMultiplier);
         kf2 = Keyframe.ofFloat(midwayPoint, mTransitionMidRadiusMultiplier);
         kf3 = Keyframe.ofFloat(1f, 1);
-        PropertyValuesHolder radiusReappear = PropertyValuesHolder.ofKeyframe(
+        @SuppressLint("ObjectAnimatorBinding") PropertyValuesHolder radiusReappear = PropertyValuesHolder.ofKeyframe(
                 "animationRadiusMultiplier", kf0, kf1, kf2, kf3);
 
         kf0 = Keyframe.ofFloat(0f, 0f);
         kf1 = Keyframe.ofFloat(delayPoint, 0f);
         kf2 = Keyframe.ofFloat(1f, 1f);
-        PropertyValuesHolder fadeIn = PropertyValuesHolder.ofKeyframe("alpha", kf0, kf1, kf2);
+        @SuppressLint("ObjectAnimatorBinding") PropertyValuesHolder fadeIn = PropertyValuesHolder.ofKeyframe("alpha", kf0, kf1, kf2);
 
         mReappearAnimator = ObjectAnimator.ofPropertyValuesHolder(
                 this, radiusReappear, fadeIn).setDuration(totalDuration);

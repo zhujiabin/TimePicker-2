@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.View;
 
 import photran.me.timepicker.R;
+import photran.me.timepicker.other.ResourceLoader;
 
 /**
  * Draws a simple white circle on which the numbers will be drawn.
@@ -47,7 +48,7 @@ public class CircleView extends View {
     public CircleView(Context context) {
         super(context);
 
-        Resources res = context.getResources();
+        final ResourceLoader res = new ResourceLoader(context);
         mCircleColor = res.getColor(android.R.color.white);
         mDotColor = res.getColor(R.color.numbers_text_color);
         mPaint.setAntiAlias(true);
@@ -77,7 +78,7 @@ public class CircleView extends View {
     }
 
     public void setTheme(Context context, boolean dark) {
-        Resources res = context.getResources();
+        final ResourceLoader res = new ResourceLoader(context);
         if (dark) {
             mCircleColor = res.getColor(R.color.dark_gray);
             mDotColor = res.getColor(R.color.light_gray);

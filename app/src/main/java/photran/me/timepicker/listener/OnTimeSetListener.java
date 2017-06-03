@@ -1,4 +1,4 @@
-package photran.me.timepicker;
+package photran.me.timepicker.listener;
 
 /**
  * Created by photran on 6/1/17.
@@ -20,7 +20,7 @@ public abstract class OnTimeSetListener implements Parcelable {
      * @param hourOfDay The hour that was set.
      * @param minute    The minute that was set.
      */
-    abstract void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute);
+    public abstract void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute);
 
     @Override
     public int describeContents() {

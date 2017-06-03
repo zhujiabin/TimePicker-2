@@ -37,13 +37,12 @@ import android.view.accessibility.AccessibilityManager;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.FrameLayout;
 
-import photran.me.timepicker.HapticFeedbackController;
+import java.util.Locale;
+
+import photran.me.timepicker.other.HapticFeedbackController;
 import photran.me.timepicker.R;
 import photran.me.timepicker.TimePickerDialog;
-import photran.me.timepicker.views.AmPmCirclesView;
-import photran.me.timepicker.views.CircleView;
-import photran.me.timepicker.views.RadialSelectorView;
-import photran.me.timepicker.views.RadialTextsView;
+import photran.me.timepicker.other.ResourceLoader;
 
 /**
  * The primary layout to hold the circular picker, and the am/pm buttons. This view well measure
@@ -61,7 +60,7 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
     private static final int MINUTE_VALUE_TO_DEGREES_STEP_SIZE = 6;
     private static final int HOUR_INDEX = TimePickerDialog.HOUR_INDEX;
     private static final int MINUTE_INDEX = TimePickerDialog.MINUTE_INDEX;
-    private static final int AMPM_INDEX = TimePickerDialog.AMPM_INDEX;
+    private static final int AMPM_INDEX = TimePickerDialog.AM_PM_INDEX;
     private static final int ENABLE_PICKER_INDEX = TimePickerDialog.ENABLE_PICKER_INDEX;
     private static final int AM = TimePickerDialog.AM;
     private static final int PM = TimePickerDialog.PM;
@@ -136,7 +135,8 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
         mGrayBox = new View(context);
         mGrayBox.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        mGrayBox.setBackgroundColor(getResources().getColor(R.color.transparent_black));
+        final ResourceLoader res = new ResourceLoader(context);
+        mGrayBox.setBackgroundColor(res.getColor(R.color.transparent_black));
         mGrayBox.setVisibility(View.INVISIBLE);
         addView(mGrayBox);
 
@@ -192,7 +192,7 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
         }
 
         // Initialize the hours and minutes numbers.
-        Resources res = context.getResources();
+        final ResourceLoader res = new ResourceLoader(context);
         int[] hours = {12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
         int[] hours_24 = {0, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23};
         int[] minutes = {0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55};
@@ -201,9 +201,9 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
         String[] minutesTexts = new String[12];
         for (int i = 0; i < 12; i++) {
             hoursTexts[i] = is24HourMode ?
-                    String.format("%02d", hours_24[i]) : String.format("%d", hours[i]);
-            innerHoursTexts[i] = String.format("%d", hours[i]);
-            minutesTexts[i] = String.format("%02d", minutes[i]);
+                    String.format(Locale.ENGLISH, "%02d", hours_24[i]) : String.format(Locale.ENGLISH, "%d", hours[i]);
+            innerHoursTexts[i] = String.format(Locale.ENGLISH, "%d", hours[i]);
+            minutesTexts[i] = String.format(Locale.ENGLISH, "%02d", minutes[i]);
         }
         mHourRadialTextsView.initialize(res,
                 hoursTexts, (is24HourMode ? innerHoursTexts : null), mHideAmPm, true);

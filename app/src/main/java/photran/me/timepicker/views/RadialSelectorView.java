@@ -21,6 +21,7 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -29,7 +30,8 @@ import android.util.Log;
 import android.view.View;
 
 import photran.me.timepicker.R;
-import photran.me.timepicker.Utils;
+import photran.me.timepicker.other.ResourceLoader;
+import photran.me.timepicker.other.Utils;
 
 
 /**
@@ -100,7 +102,7 @@ public class RadialSelectorView extends View {
             return;
         }
 
-        Resources res = context.getResources();
+        final ResourceLoader res = new ResourceLoader(context);
 
         int blue = res.getColor(R.color.blue);
         mPaint.setColor(blue);
@@ -145,7 +147,7 @@ public class RadialSelectorView extends View {
 
     /* package */
     public void setTheme(Context context, boolean themeDark) {
-        Resources res = context.getResources();
+        final ResourceLoader res = new ResourceLoader(context);
         int color;
         if (themeDark) {
             color = res.getColor(R.color.red);
@@ -192,6 +194,7 @@ public class RadialSelectorView extends View {
     /**
      * Set the multiplier for the radius. Will be used during animations to move in/out.
      */
+    @SuppressLint("ObjectAnimatorBinding")
     public void setAnimationRadiusMultiplier(float animationRadiusMultiplier) {
         mAnimationRadiusMultiplier = animationRadiusMultiplier;
     }
@@ -325,6 +328,7 @@ public class RadialSelectorView extends View {
         canvas.drawLine(mXCenter, mYCenter, pointX, pointY, mPaint);
     }
 
+    @SuppressLint("ObjectAnimatorBinding")
     public ObjectAnimator getDisappearAnimator() {
         if (!mIsInitialized || !mDrawValuesReady) {
             Log.e(TAG, "RadialSelectorView was not ready for animation.");
@@ -343,7 +347,7 @@ public class RadialSelectorView extends View {
 
         kf0 = Keyframe.ofFloat(0f, 1f);
         kf1 = Keyframe.ofFloat(1f, 0f);
-        PropertyValuesHolder fadeOut = PropertyValuesHolder.ofKeyframe("alpha", kf0, kf1);
+        @SuppressLint("ObjectAnimatorBinding") PropertyValuesHolder fadeOut = PropertyValuesHolder.ofKeyframe("alpha", kf0, kf1);
 
         ObjectAnimator disappearAnimator = ObjectAnimator.ofPropertyValuesHolder(
                 this, radiusDisappear, fadeOut).setDuration(duration);
@@ -382,7 +386,7 @@ public class RadialSelectorView extends View {
         kf0 = Keyframe.ofFloat(0f, 0f);
         kf1 = Keyframe.ofFloat(delayPoint, 0f);
         kf2 = Keyframe.ofFloat(1f, 1f);
-        PropertyValuesHolder fadeIn = PropertyValuesHolder.ofKeyframe("alpha", kf0, kf1, kf2);
+        @SuppressLint("ObjectAnimatorBinding") PropertyValuesHolder fadeIn = PropertyValuesHolder.ofKeyframe("alpha", kf0, kf1, kf2);
 
         ObjectAnimator reappearAnimator = ObjectAnimator.ofPropertyValuesHolder(
                 this, radiusReappear, fadeIn).setDuration(totalDuration);
