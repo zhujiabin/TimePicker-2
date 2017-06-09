@@ -10,7 +10,7 @@ import photran.me.timepicker.TimePickerDialog;
 import photran.me.timepicker.listener.OnTimeSetListener;
 import photran.me.timepicker.views.RadialPickerLayout;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnTimeSetListener {
 
     private TimePickerDialog timePickerDialog;
 
@@ -21,19 +21,19 @@ public class MainActivity extends AppCompatActivity {
 
         timePickerDialog = new TimePickerDialog.Builder()
                 .setTimer(8, 50, false)
-                .setThemeDark(true)
-                .setOnTimeSetListener(new OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
-                        Toast.makeText(MainActivity.this, hourOfDay + "-" + minute, Toast.LENGTH_LONG).show();
-                    }
-                }).createDialog();
+                .createDialog();
 
         timePickerDialog.show(getFragmentManager(), TimePickerDialog.class.getName());
-
     }
 
     public void onTimeDialogClicked(View view) {
         timePickerDialog.show(getFragmentManager(), TimePickerDialog.class.getName());
+    }
+
+    @Override
+    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
+        if (timePickerDialog != null) {
+            Toast.makeText(MainActivity.this, hourOfDay + "-" + minute, Toast.LENGTH_LONG).show();
+        }
     }
 }

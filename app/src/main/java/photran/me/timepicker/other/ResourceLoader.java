@@ -1,6 +1,7 @@
 package photran.me.timepicker.other;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.StringRes;
@@ -25,5 +26,9 @@ public class ResourceLoader {
 
     public String getString(@StringRes int text) {
         return mContext.getResources().getString(text);
+    }
+
+    public ColorStateList getColorStateList(@ColorRes int id) {
+        return ContextCompat.getColorStateList(mContext, id);
     }
 }

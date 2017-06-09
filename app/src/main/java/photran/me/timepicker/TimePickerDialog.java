@@ -19,9 +19,10 @@ package photran.me.timepicker;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.ActionBar.LayoutParams;
+import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -43,6 +44,7 @@ import java.util.Locale;
 import photran.me.timepicker.listener.OnTimeSetListener;
 import photran.me.timepicker.other.BuilderFragment;
 import photran.me.timepicker.other.HapticFeedbackController;
+import photran.me.timepicker.other.ResourceLoader;
 import photran.me.timepicker.other.Utils;
 import photran.me.timepicker.views.RadialPickerLayout;
 
@@ -52,7 +54,6 @@ import photran.me.timepicker.views.RadialPickerLayout;
 public class TimePickerDialog extends DialogFragment implements RadialPickerLayout.OnValueSelectedListener {
 
     public static class Builder extends BuilderFragment {
-        public static final String ARG_LISTENER = OnTimeSetListener.class.getName();
 
         public Builder() {
             super();
@@ -68,11 +69,6 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
             putInt(KEY_MINUTE, minute);
             putBoolean(KEY_IS_24_HOUR_VIEW, is24HourMode);
 
-            return this;
-        }
-
-        public Builder setOnTimeSetListener(OnTimeSetListener listener) {
-            putParcelable(ARG_LISTENER, listener);
             return this;
         }
 
@@ -165,6 +161,22 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (getTargetFragment() instanceof OnTimeSetListener) {
+            mCallback = (OnTimeSetListener) getTargetFragment();
+        } else if (getActivity() instanceof OnTimeSetListener) {
+            mCallback = (OnTimeSetListener) getActivity();
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallback = null;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -179,17 +191,22 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
     }
 
     @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        final Dialog dialog = super.onCreateDialog(savedInstanceState);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        }
+        return dialog;
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if (getDialog().getWindow() != null) {
-            getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        }
-
-        @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.time_picker_dialog, null);
-        KeyboardListener keyboardListener = new KeyboardListener();
+        final @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.time_picker_dialog, null);
+        final KeyboardListener keyboardListener = new KeyboardListener();
         view.findViewById(R.id.time_picker_dialog).setOnKeyListener(keyboardListener);
 
-        Resources res = getResources();
+        final ResourceLoader res = new ResourceLoader(getActivity());
         mHourPickerDescription = res.getString(R.string.hour_picker_description);
         mSelectHours = res.getString(R.string.select_hours);
         mMinutePickerDescription = res.getString(R.string.minute_picker_description);
@@ -263,7 +280,7 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
         if (mIs24HourMode) {
             mAmPmTextView.setVisibility(View.GONE);
 
-            RelativeLayout.LayoutParams paramsSeparator = new RelativeLayout.LayoutParams(
+            final RelativeLayout.LayoutParams paramsSeparator = new RelativeLayout.LayoutParams(
                     LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
             paramsSeparator.addRule(RelativeLayout.CENTER_IN_PARENT);
             TextView separatorView = (TextView) view.findViewById(R.id.separator);
@@ -308,25 +325,22 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
         // Set the theme at the end so that the initialize()s above don't counteract the theme.
         mTimePicker.setTheme(getActivity().getApplicationContext(), mThemeDark);
         // Prepare some colors to use.
-        int white = res.getColor(android.R.color.white);
-        int circleBackground = res.getColor(R.color.circle_background);
-        int line = res.getColor(R.color.line_background);
-        int timeDisplay = res.getColor(R.color.numbers_text_color);
-        ColorStateList doneTextColor = res.getColorStateList(R.color.done_text_color);
-        int doneBackground = R.drawable.done_background_color;
+        final int white = res.getColor(android.R.color.white);
+        final int circleBackground = res.getColor(R.color.circle_background);
+        final int timeDisplay = res.getColor(R.color.numbers_text_color);
+        final ColorStateList doneTextColor = res.getColorStateList(R.color.done_text_color);
+        final int doneBackground = R.drawable.done_background_color;
 
-        int darkGray = res.getColor(R.color.dark_gray);
-        int lightGray = res.getColor(R.color.light_gray);
-        int darkLine = res.getColor(R.color.line_dark);
-        ColorStateList darkDoneTextColor = res.getColorStateList(R.color.done_text_color_dark);
-        int darkDoneBackground = R.drawable.done_background_color_dark;
+        final int darkGray = res.getColor(R.color.dark_gray);
+        final int lightGray = res.getColor(R.color.light_gray);
+        final ColorStateList darkDoneTextColor = res.getColorStateList(R.color.done_text_color_dark);
+        final int darkDoneBackground = R.drawable.done_background_color_dark;
 
         // Set the colors for each view based on the theme.
         view.findViewById(R.id.time_display_background).setBackgroundColor(mThemeDark ? darkGray : white);
         view.findViewById(R.id.time_display).setBackgroundColor(mThemeDark ? darkGray : white);
         ((TextView) view.findViewById(R.id.separator)).setTextColor(mThemeDark ? white : timeDisplay);
         ((TextView) view.findViewById(R.id.ampm_label)).setTextColor(mThemeDark ? white : timeDisplay);
-        // view.findViewById(R.id.line).setBackgroundColor(mThemeDark ? darkLine : line);
         mDoneButton.setTextColor(mThemeDark ? darkDoneTextColor : doneTextColor);
         mTimePicker.setBackgroundColor(mThemeDark ? lightGray : circleBackground);
         mDoneButton.setBackgroundResource(mThemeDark ? darkDoneBackground : doneBackground);
@@ -431,7 +445,7 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
         if (value == 60) {
             value = 0;
         }
-        CharSequence text = String.format(Locale.getDefault(), "%02d", value);
+        final CharSequence text = String.format(Locale.getDefault(), "%02d", value);
         Utils.tryAccessibilityAnnounce(mTimePicker, text);
         mMinuteView.setText(text);
         mMinuteSpaceView.setText(text);

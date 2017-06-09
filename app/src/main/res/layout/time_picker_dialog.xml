@@ -42,12 +42,6 @@
         android:focusable="true"
         android:focusableInTouchMode="true" />
 
-    <!--<View-->
-        <!--android:id="@+id/line"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="1dip"-->
-        <!--android:background="@color/line_background" />-->
-
     <Button
         android:id="@+id/done_button"
         android:layout_width="match_parent"
