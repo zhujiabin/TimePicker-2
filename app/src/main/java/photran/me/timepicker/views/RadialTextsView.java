@@ -23,7 +23,6 @@ import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -73,8 +72,8 @@ public class RadialTextsView extends View {
     private float mAnimationRadiusMultiplier;
     private float mTransitionMidRadiusMultiplier;
     private float mTransitionEndRadiusMultiplier;
-    ObjectAnimator mDisappearAnimator;
-    ObjectAnimator mReappearAnimator;
+    private ObjectAnimator mDisappearAnimator;
+    private ObjectAnimator mReappearAnimator;
     private InvalidateUpdateListener mInvalidateUpdateListener;
 
     public RadialTextsView(Context context) {
@@ -147,7 +146,7 @@ public class RadialTextsView extends View {
     }
 
     public void setTheme(Context context, boolean themeDark) {
-        Resources res = context.getResources();
+        final ResourceLoader res = new ResourceLoader(context);
         int textColor;
         if (themeDark) {
             textColor = res.getColor(android.R.color.white);

@@ -76,13 +76,13 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
     private boolean mHideAmPm;
     private int mCurrentItemShowing;
 
-    private CircleView mCircleView;
-    private AmPmCirclesView mAmPmCirclesView;
-    private RadialTextsView mHourRadialTextsView;
-    private RadialTextsView mMinuteRadialTextsView;
-    private RadialSelectorView mHourRadialSelectorView;
-    private RadialSelectorView mMinuteRadialSelectorView;
-    private View mGrayBox;
+    private final CircleView mCircleView;
+    private final AmPmCirclesView mAmPmCirclesView;
+    private final RadialTextsView mHourRadialTextsView;
+    private final RadialTextsView mMinuteRadialTextsView;
+    private final RadialSelectorView mHourRadialSelectorView;
+    private final RadialSelectorView mMinuteRadialSelectorView;
+    private final View mGrayBox;
 
     private int[] mSnapPrefer30sMap;
     private boolean mInputEnabled;
@@ -92,10 +92,10 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
     private int mDownDegrees;
     private float mDownX;
     private float mDownY;
-    private AccessibilityManager mAccessibilityManager;
+    private final AccessibilityManager mAccessibilityManager;
 
     private AnimatorSet mTransition;
-    private Handler mHandler = new Handler();
+    private final Handler mHandler = new Handler();
 
     public interface OnValueSelectedListener {
         void onValueSelected(int pickerIndex, int newValue, boolean autoAdvance);

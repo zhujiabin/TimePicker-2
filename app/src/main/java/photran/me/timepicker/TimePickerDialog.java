@@ -23,7 +23,6 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -43,7 +42,6 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import photran.me.timepicker.listener.OnTimeSetListener;
-import photran.me.timepicker.other.BuilderFragment;
 import photran.me.timepicker.other.HapticFeedbackController;
 import photran.me.timepicker.other.ResourceLoader;
 import photran.me.timepicker.other.Utils;
@@ -54,28 +52,30 @@ import photran.me.timepicker.views.RadialPickerLayout;
  */
 public class TimePickerDialog extends DialogFragment implements RadialPickerLayout.OnValueSelectedListener {
 
-    public static class Builder extends BuilderFragment {
+    public static class Builder {
+
+        private final Bundle mBundle = new Bundle();
 
         public Builder() {
-            super();
+
         }
 
         public Builder setThemeDark(boolean dark) {
-            putBoolean(KEY_DARK_THEME, dark);
+            mBundle.putBoolean(KEY_DARK_THEME, dark);
             return this;
         }
 
         public Builder setTimer(int hourOfDay, int minute, boolean is24HourMode) {
-            putInt(KEY_HOUR_OF_DAY, hourOfDay);
-            putInt(KEY_MINUTE, minute);
-            putBoolean(KEY_IS_24_HOUR_VIEW, is24HourMode);
+            mBundle.putInt(KEY_HOUR_OF_DAY, hourOfDay);
+            mBundle.putInt(KEY_MINUTE, minute);
+            mBundle.putBoolean(KEY_IS_24_HOUR_VIEW, is24HourMode);
 
             return this;
         }
 
         public TimePickerDialog createDialog() {
             final TimePickerDialog timePickerDialog = new TimePickerDialog();
-            timePickerDialog.setArguments(build());
+            timePickerDialog.setArguments(mBundle);
             return timePickerDialog;
         }
     }
@@ -353,8 +353,8 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
         final ColorStateList darkDoneTextColor = res.getColorStateList(R.color.done_text_color_dark);
 
         final int darkDoneBackground = Utils.isLandscape(getActivity()) ?
-                R.drawable.done_background_color_dark :
-                R.drawable.done_background_color_dark_land;
+                R.drawable.done_background_color_dark_land :
+                R.drawable.done_background_color_dark;
 
         // Set the colors for each view based on the theme.
         view.findViewById(R.id.time_display_background).setBackgroundColor(mThemeDark ? darkGray : white);
@@ -974,8 +974,8 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
      * mChildren are the children that can be reached from this node.
      */
     private class Node {
-        private int[] mLegalKeys;
-        private ArrayList<Node> mChildren;
+        private final int[] mLegalKeys;
+        private final ArrayList<Node> mChildren;
 
         public Node(int... legalKeys) {
             mLegalKeys = legalKeys;

@@ -13,7 +13,7 @@ import android.support.v4.content.ContextCompat;
 
 public class ResourceLoader {
 
-    private Context mContext;
+    private final Context mContext;
 
     public ResourceLoader(Context context) {
         mContext = context;

@@ -5,14 +5,12 @@
     <color name="dark_gray">#363636</color>
     <color name="transparent_black">#7f000000</color>
     <color name="ampm_text_color">#8c8c8c</color>
-    <color name="line_background">#cccccc</color>
     <color name="blue_focused">#c1e8f7</color>
     <color name="neutral_pressed">#33999999</color>
     <color name="red">#ff3333</color>
     <color name="red_focused">#853333</color>
     <color name="blue">#33b5e5</color>
     <color name="circle_background">#f2f2f2</color>
-    <color name="line_dark">#808080</color>
     <color name="done_text_color_dark_normal">#ffffff</color>
     <color name="done_text_color_dark_disabled">#888888</color>
     <color name="done_text_color_normal">#000000</color>
