@@ -102,7 +102,8 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
     // Delay before starting the pulse animation, in ms.
     private static final int PULSE_ANIMATOR_DELAY = 300;
 
-    private OnTimeSetListener mCallback;
+    private OnTimeSetListener mCallbackTargetFragment;
+    private OnTimeSetListener mCallbackActivity;
 
     private HapticFeedbackController mHapticFeedbackController;
 
@@ -165,16 +166,20 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
     public void onAttach(Context context) {
         super.onAttach(context);
         if (getTargetFragment() instanceof OnTimeSetListener) {
-            mCallback = (OnTimeSetListener) getTargetFragment();
+            mCallbackTargetFragment = (OnTimeSetListener) getTargetFragment();
+            mCallbackActivity = null;
         } else if (getActivity() instanceof OnTimeSetListener) {
-            mCallback = (OnTimeSetListener) getActivity();
+            mCallbackTargetFragment = null;
+            mCallbackActivity = (OnTimeSetListener) getActivity();
         }
+
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mCallback = null;
+        mCallbackActivity = null;
+        mCallbackTargetFragment = null;
     }
 
     @Override
@@ -283,10 +288,16 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
                 } else {
                     tryVibrate();
                 }
-                if (mCallback != null) {
-                    mCallback.onTimeSet(mTimePicker,
+                if (mCallbackActivity != null) {
+                    mCallbackActivity.onTimeSet(mTimePicker,
                             mTimePicker.getHours(), mTimePicker.getMinutes());
                 }
+
+                if (mCallbackTargetFragment != null) {
+                    mCallbackTargetFragment.onTimeSet(mTimePicker,
+                            mTimePicker.getHours(), mTimePicker.getMinutes());
+                }
+
                 dismiss();
             }
         });
@@ -534,10 +545,16 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
                 }
                 finishKbMode(false);
             }
-            if (mCallback != null) {
-                mCallback.onTimeSet(mTimePicker,
+            if (mCallbackActivity != null) {
+                mCallbackActivity.onTimeSet(mTimePicker,
                         mTimePicker.getHours(), mTimePicker.getMinutes());
             }
+
+            if (mCallbackTargetFragment != null) {
+                mCallbackTargetFragment.onTimeSet(mTimePicker,
+                        mTimePicker.getHours(), mTimePicker.getMinutes());
+            }
+
             dismiss();
             return true;
         } else if (keyCode == KeyEvent.KEYCODE_DEL) {
