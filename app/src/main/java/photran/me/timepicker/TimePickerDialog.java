@@ -23,6 +23,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -177,10 +178,35 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        final Dialog dialog = getDialog();
+        if (dialog != null) {
+            final Window windowDialog = dialog.getWindow();
+            if (windowDialog != null) {
+                if (Utils.isLandscape(getActivity())) {
+                    final int width = ViewGroup.LayoutParams.MATCH_PARENT;
+                    final int height = ViewGroup.LayoutParams.MATCH_PARENT;
+                    windowDialog.setLayout(width, height);
+                }
+            }
+        }
+    }
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        final Dialog dialog = super.onCreateDialog(savedInstanceState);
+        if (dialog != null && dialog.getWindow() != null) {
+            dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        }
+        return dialog;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         final Bundle bundleInput = getArguments();
+
         if (isContainsArguments(bundleInput)) {
             initialize(bundleInput);
         }
@@ -188,15 +214,6 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
         if (isContainsArguments(savedInstanceState)) {
             initialize(savedInstanceState);
         }
-    }
-
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final Dialog dialog = super.onCreateDialog(savedInstanceState);
-        if (dialog.getWindow() != null) {
-            dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        }
-        return dialog;
     }
 
     @Override
@@ -334,7 +351,10 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
         final int darkGray = res.getColor(R.color.dark_gray);
         final int lightGray = res.getColor(R.color.light_gray);
         final ColorStateList darkDoneTextColor = res.getColorStateList(R.color.done_text_color_dark);
-        final int darkDoneBackground = R.drawable.done_background_color_dark;
+
+        final int darkDoneBackground = Utils.isLandscape(getActivity()) ?
+                R.drawable.done_background_color_dark :
+                R.drawable.done_background_color_dark_land;
 
         // Set the colors for each view based on the theme.
         view.findViewById(R.id.time_display_background).setBackgroundColor(mThemeDark ? darkGray : white);
@@ -342,8 +362,10 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
         ((TextView) view.findViewById(R.id.separator)).setTextColor(mThemeDark ? white : timeDisplay);
         ((TextView) view.findViewById(R.id.ampm_label)).setTextColor(mThemeDark ? white : timeDisplay);
         mDoneButton.setTextColor(mThemeDark ? darkDoneTextColor : doneTextColor);
-        mTimePicker.setBackgroundColor(mThemeDark ? lightGray : circleBackground);
         mDoneButton.setBackgroundResource(mThemeDark ? darkDoneBackground : doneBackground);
+        mTimePicker.setBackgroundColor(mThemeDark ? lightGray : circleBackground);
+        view.setBackgroundColor(mThemeDark ? lightGray : circleBackground);
+
         return view;
     }
 

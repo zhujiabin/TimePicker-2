@@ -20,13 +20,19 @@ public class MainActivity extends AppCompatActivity implements OnTimeSetListener
         setContentView(R.layout.activity_main);
 
         timePickerDialog = new TimePickerDialog.Builder()
-                .setTimer(8, 50, false)
+                .setTimer(8, 50, true)
+                .setThemeDark(true)
                 .createDialog();
 
         timePickerDialog.show(getFragmentManager(), TimePickerDialog.class.getName());
     }
 
     public void onTimeDialogClicked(View view) {
+        timePickerDialog = new TimePickerDialog.Builder()
+                .setTimer(8, 50, true)
+                .setThemeDark(false)
+                .createDialog();
+
         timePickerDialog.show(getFragmentManager(), TimePickerDialog.class.getName());
     }
 

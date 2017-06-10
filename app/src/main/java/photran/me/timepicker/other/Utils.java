@@ -20,6 +20,9 @@ import android.animation.Keyframe;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
+import android.view.Surface;
 import android.view.View;
 
 /**
@@ -68,5 +71,21 @@ public class Utils {
         pulseAnimator.setDuration(PULSE_ANIMATOR_DURATION);
 
         return pulseAnimator;
+    }
+
+
+    public static boolean isLandscape(Activity activity) {
+        int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
+
+        switch (rotation) {
+            case Surface.ROTATION_0:
+            case Surface.ROTATION_180:
+                return false;
+
+            case Surface.ROTATION_90:
+            case Surface.ROTATION_270:
+                return true;
+        }
+        return true;
     }
 }
