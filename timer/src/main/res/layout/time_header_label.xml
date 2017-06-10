@@ -48,7 +48,7 @@
         android:layout_marginLeft="@dimen/extra_time_label_margin"
         android:layout_marginRight="@dimen/extra_time_label_margin">
 
-        <photran.me.timepicker.views.AccessibleTextView
+        <photran.me.timer.views.AccessibleTextView
             android:id="@+id/hours"
             style="@style/time_label"
             android:layout_width="wrap_content"
@@ -91,7 +91,7 @@
         android:layout_marginLeft="@dimen/extra_time_label_margin"
         android:layout_marginRight="@dimen/extra_time_label_margin">
 
-        <photran.me.timepicker.views.AccessibleTextView
+        <photran.me.timer.views.AccessibleTextView
             android:id="@+id/minutes"
             style="@style/time_label"
             android:layout_width="wrap_content"
@@ -101,7 +101,7 @@
             android:text="@string/time_placeholder" />
     </FrameLayout>
 
-    <photran.me.timepicker.views.AccessibleTextView
+    <photran.me.timer.views.AccessibleTextView
         android:id="@+id/ampm_hitspace"
         android:layout_width="@dimen/ampm_label_size"
         android:layout_height="wrap_content"

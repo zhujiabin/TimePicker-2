@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package photran.me.timepicker.views;
+package photran.me.timer.views;
 
 import android.animation.Keyframe;
 import android.animation.ObjectAnimator;
@@ -23,15 +23,14 @@ import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.Log;
 import android.view.View;
 
-import photran.me.timepicker.R;
-import photran.me.timepicker.other.ResourceLoader;
-import photran.me.timepicker.other.Utils;
+import photran.me.timer.R;
+import photran.me.timer.other.ResourceLoader;
+import photran.me.timer.other.Utils;
 
 
 /**

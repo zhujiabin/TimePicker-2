@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package photran.me.timepicker.views;
+package photran.me.timer.views;
 
 import android.annotation.TargetApi;
 import android.content.Context;

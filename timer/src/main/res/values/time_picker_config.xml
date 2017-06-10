@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">Time Picker</string>
     <color name="numbers_text_color">#8c8c8c</color>
     <color name="light_gray">#404040</color>
     <color name="dark_gray">#363636</color>

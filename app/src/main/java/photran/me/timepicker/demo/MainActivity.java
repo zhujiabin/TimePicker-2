@@ -6,9 +6,9 @@ import android.view.View;
 import android.widget.Toast;
 
 import photran.me.timepicker.R;
-import photran.me.timepicker.TimePickerDialog;
-import photran.me.timepicker.listener.OnTimeSetListener;
-import photran.me.timepicker.views.RadialPickerLayout;
+import photran.me.timer.TimePickerDialog;
+import photran.me.timer.listener.OnTimeSetListener;
+import photran.me.timer.views.RadialPickerLayout;
 
 public class MainActivity extends AppCompatActivity implements OnTimeSetListener {
 

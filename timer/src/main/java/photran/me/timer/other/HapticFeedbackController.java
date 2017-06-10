@@ -1,4 +1,4 @@
-package photran.me.timepicker.other;
+package photran.me.timer.other;
 
 import android.app.Service;
 import android.content.Context;

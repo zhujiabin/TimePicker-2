@@ -14,7 +14,7 @@
  * limitations under the License
  */
 
-package photran.me.timepicker;
+package photran.me.timer;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
@@ -41,11 +41,11 @@ import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import photran.me.timepicker.listener.OnTimeSetListener;
-import photran.me.timepicker.other.HapticFeedbackController;
-import photran.me.timepicker.other.ResourceLoader;
-import photran.me.timepicker.other.Utils;
-import photran.me.timepicker.views.RadialPickerLayout;
+import photran.me.timer.listener.OnTimeSetListener;
+import photran.me.timer.other.HapticFeedbackController;
+import photran.me.timer.other.ResourceLoader;
+import photran.me.timer.other.Utils;
+import photran.me.timer.views.RadialPickerLayout;
 
 /**
  * Dialog to set a time.

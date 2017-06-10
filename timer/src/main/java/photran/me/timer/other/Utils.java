@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package photran.me.timepicker.other;
+package photran.me.timer.other;
 
 import android.animation.Keyframe;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.view.Surface;
 import android.view.View;
 

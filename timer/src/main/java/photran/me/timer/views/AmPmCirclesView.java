@@ -14,24 +14,23 @@
  * limitations under the License.
  */
 
-package photran.me.timepicker.views;
+package photran.me.timer.views;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.graphics.Paint.Align;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.View;
 
-
 import java.text.DateFormatSymbols;
 
-import photran.me.timepicker.R;
-import photran.me.timepicker.TimePickerDialog;
-import photran.me.timepicker.other.ResourceLoader;
-import photran.me.timepicker.other.Utils;
+import photran.me.timer.R;
+import photran.me.timer.TimePickerDialog;
+import photran.me.timer.other.ResourceLoader;
+import photran.me.timer.other.Utils;
+
 
 /**
  * Draw the two smaller AM and PM circles next to where the larger circle will be.

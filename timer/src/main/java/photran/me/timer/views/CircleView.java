@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package photran.me.timepicker.views;
+package photran.me.timer.views;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -23,8 +23,8 @@ import android.graphics.Paint;
 import android.util.Log;
 import android.view.View;
 
-import photran.me.timepicker.R;
-import photran.me.timepicker.other.ResourceLoader;
+import photran.me.timer.R;
+import photran.me.timer.other.ResourceLoader;
 
 /**
  * Draws a simple white circle on which the numbers will be drawn.

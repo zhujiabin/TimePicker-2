@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package photran.me.timepicker.views;
+package photran.me.timer.views;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.format.DateUtils;
@@ -39,10 +38,10 @@ import android.widget.FrameLayout;
 
 import java.util.Locale;
 
-import photran.me.timepicker.other.HapticFeedbackController;
-import photran.me.timepicker.R;
-import photran.me.timepicker.TimePickerDialog;
-import photran.me.timepicker.other.ResourceLoader;
+import photran.me.timer.R;
+import photran.me.timer.TimePickerDialog;
+import photran.me.timer.other.HapticFeedbackController;
+import photran.me.timer.other.ResourceLoader;
 
 /**
  * The primary layout to hold the circular picker, and the am/pm buttons. This view well measure
