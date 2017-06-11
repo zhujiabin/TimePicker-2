@@ -21,7 +21,9 @@ import android.annotation.SuppressLint;
 import android.app.ActionBar.LayoutParams;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -52,12 +54,21 @@ import photran.me.timer.views.RadialPickerLayout;
  */
 public class TimePickerDialog extends DialogFragment implements RadialPickerLayout.OnValueSelectedListener {
 
+    public static final String TIME_PICKER_DIALOG_RESULT_ACTION = "photran.me.timer.timepickerdialog.action";
+
     public static class Builder {
 
-        private final Bundle mBundle = new Bundle();
+        private Bundle mBundle = new Bundle();
 
         public Builder() {
 
+        }
+
+        public Builder(@NonNull Intent intent) {
+            final Bundle extras = intent.getExtras();
+            if (extras != null) {
+                mBundle = extras;
+            }
         }
 
         public Builder setThemeDark(boolean dark) {
@@ -73,14 +84,30 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
             return this;
         }
 
+        public Bundle getArguments() {
+            return mBundle;
+        }
+
+        public int getHourOfDay() {
+            return mBundle.getInt(KEY_HOUR_OF_DAY, -1);
+        }
+
+        public int getMinute() {
+            return mBundle.getInt(KEY_MINUTE, -1);
+        }
+
+        public boolean is24HourView() {
+            return mBundle.getBoolean(KEY_IS_24_HOUR_VIEW, false);
+        }
+
         public TimePickerDialog createDialog() {
             final TimePickerDialog timePickerDialog = new TimePickerDialog();
-            timePickerDialog.setArguments(mBundle);
+            timePickerDialog.setArguments(getArguments());
             return timePickerDialog;
         }
     }
 
-    private static final String TAG = "TimePickerDialog";
+    private static final String TAG = TimePickerDialog.class.getSimpleName();
 
     private static final String KEY_HOUR_OF_DAY = "hour_of_day";
     private static final String KEY_MINUTE = "minute";
@@ -288,15 +315,10 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
                 } else {
                     tryVibrate();
                 }
-                if (mCallbackActivity != null) {
-                    mCallbackActivity.onTimeSet(mTimePicker,
-                            mTimePicker.getHours(), mTimePicker.getMinutes());
-                }
 
-                if (mCallbackTargetFragment != null) {
-                    mCallbackTargetFragment.onTimeSet(mTimePicker,
-                            mTimePicker.getHours(), mTimePicker.getMinutes());
-                }
+                sendBroadcastResult();
+                handleCallbackResult(mTimePicker,
+                        mTimePicker.getHours(), mTimePicker.getMinutes());
 
                 dismiss();
             }
@@ -347,7 +369,7 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
             tryStartingKbMode(-1);
             mHourView.invalidate();
         } else if (mTypedTimes == null) {
-            mTypedTimes = new ArrayList<Integer>();
+            mTypedTimes = new ArrayList<>();
         }
 
         // Set the theme at the end so that the initialize()s above don't counteract the theme.
@@ -378,6 +400,29 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
         view.setBackgroundColor(mThemeDark ? lightGray : circleBackground);
 
         return view;
+    }
+
+    private void sendBroadcastResult() {
+        final Intent intent = new Intent();
+        intent.setAction(TIME_PICKER_DIALOG_RESULT_ACTION);
+        final Builder builder = new Builder();
+        builder.setTimer(mTimePicker.getHours(), mTimePicker.getMinutes(), mIs24HourMode);
+        intent.putExtras(builder.getArguments());
+        getActivity().sendBroadcast(intent);
+    }
+
+    private void handleCallbackResult(RadialPickerLayout mTimePicker, int hours, int minutes) {
+        if (mCallbackActivity != null) {
+            mCallbackActivity.onTimeSet(mTimePicker,
+                    hours,
+                    minutes);
+        }
+
+        if (mCallbackTargetFragment != null) {
+            mCallbackTargetFragment.onTimeSet(mTimePicker,
+                    hours,
+                    minutes);
+        }
     }
 
     @Override
@@ -545,15 +590,9 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
                 }
                 finishKbMode(false);
             }
-            if (mCallbackActivity != null) {
-                mCallbackActivity.onTimeSet(mTimePicker,
-                        mTimePicker.getHours(), mTimePicker.getMinutes());
-            }
-
-            if (mCallbackTargetFragment != null) {
-                mCallbackTargetFragment.onTimeSet(mTimePicker,
-                        mTimePicker.getHours(), mTimePicker.getMinutes());
-            }
+            sendBroadcastResult();
+            handleCallbackResult(mTimePicker,
+                    mTimePicker.getHours(), mTimePicker.getMinutes());
 
             dismiss();
             return true;
