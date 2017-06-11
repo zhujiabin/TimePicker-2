@@ -45,7 +45,7 @@ public class HomeActivityFragment extends Fragment implements OnTimeSetListener 
     }
 
     @Override
-    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
+    public void onTimeSet(TimePickerDialog dialog, int hourOfDay, int minute) {
         Log.v("TimePickerDialog", "in fragment " + hourOfDay + "-" + minute);
     }
 

@@ -317,9 +317,7 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
                 }
 
                 sendBroadcastResult();
-                handleCallbackResult(mTimePicker,
-                        mTimePicker.getHours(), mTimePicker.getMinutes());
-
+                handleCallbackResult(mTimePicker);
                 dismiss();
             }
         });
@@ -411,17 +409,17 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
         getActivity().sendBroadcast(intent);
     }
 
-    private void handleCallbackResult(RadialPickerLayout mTimePicker, int hours, int minutes) {
+    private void handleCallbackResult(RadialPickerLayout timePicker) {
         if (mCallbackActivity != null) {
-            mCallbackActivity.onTimeSet(mTimePicker,
-                    hours,
-                    minutes);
+            mCallbackActivity.onTimeSet(this,
+                    timePicker.getHours(),
+                    timePicker.getMinutes());
         }
 
         if (mCallbackTargetFragment != null) {
-            mCallbackTargetFragment.onTimeSet(mTimePicker,
-                    hours,
-                    minutes);
+            mCallbackTargetFragment.onTimeSet(this,
+                    timePicker.getHours(),
+                    timePicker.getMinutes());
         }
     }
 
@@ -591,9 +589,7 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
                 finishKbMode(false);
             }
             sendBroadcastResult();
-            handleCallbackResult(mTimePicker,
-                    mTimePicker.getHours(), mTimePicker.getMinutes());
-
+            handleCallbackResult(mTimePicker);
             dismiss();
             return true;
         } else if (keyCode == KeyEvent.KEYCODE_DEL) {

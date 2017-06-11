@@ -5,7 +5,7 @@ package photran.me.timer.listener;
  */
 
 
-import photran.me.timer.views.RadialPickerLayout;
+import photran.me.timer.TimePickerDialog;
 
 /**
  * The callback interface used to indicate the user is done filling in
@@ -14,9 +14,9 @@ import photran.me.timer.views.RadialPickerLayout;
 public interface OnTimeSetListener {
 
     /**
-     * @param view      The view associated with this listener.
+     * @param dialog    The dialog associated with this listener.
      * @param hourOfDay The hour that was set.
      * @param minute    The minute that was set.
      */
-    void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute);
+    void onTimeSet(TimePickerDialog dialog, int hourOfDay, int minute);
 }

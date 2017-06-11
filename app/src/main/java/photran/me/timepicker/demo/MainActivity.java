@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements OnTimeSetListener
     }
 
     @Override
-    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
+    public void onTimeSet(TimePickerDialog dialog, int hourOfDay, int minute) {
         if (timePickerDialog != null) {
             Toast.makeText(MainActivity.this, hourOfDay + "-" + minute, Toast.LENGTH_LONG).show();
         }
